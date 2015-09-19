@@ -1,0 +1,16 @@
+#
+# {{ ansible_managed }}
+#
+[Unit]
+Description=influxdb
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=influxdb
+PIDFile=/var/run/influxdb/influxdb.pid
+#EnvironmentFile=/etc/sysconfig/mongod
+ExecStart=/opt/influxdb/influxd -f /etc/opt/influxdb/influxdb.conf
+
+[Install]
+WantedBy=multi-user.target

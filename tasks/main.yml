@@ -1,0 +1,27 @@
+---
+# tasks file for ansible-influxdb
+- yum: name=http://influxdb.s3.amazonaws.com/influxdb-0.9.3-1.x86_64.rpm
+  tags:
+    - influxdb
+    - influxdb.yum
+
+- yum: name=influxdb
+  tags:
+    - influxdb
+    - influxdb.yum
+
+- template: src=./influxdb.service dest=/etc/systemd/system/influxd.service
+  tags:
+    - influxdb
+    - influxdb.unit
+  when: ansible_os_family in [ "RedHat" ] and ansible_distribution_major_version == "7"
+
+- template: src=./influxdb.conf dest=/etc/opt/influxdb/influxdb.conf
+  tags:
+    - influxdb
+    - influxdb.conf
+
+- service: name=influxd state=started
+  tags:
+    - influxdb
+    - influxdb.service
